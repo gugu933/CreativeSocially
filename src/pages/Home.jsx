@@ -6,7 +6,15 @@ import { useCart } from '../context/CartContext';
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [subscriptionPlan, setSubscriptionPlan] = useState(null);
+  const [progress, setProgress] = useState(0);
   const { addToCart, isLoading } = useCart();
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -26,6 +34,55 @@ const Home = () => {
       }
     };
     loadProducts();
+  }, []);
+
+  useEffect(() => {
+    const progressSection = document.getElementById('progress-section');
+    if (!progressSection) return;
+
+    let startScroll = 0;
+    let sectionHeight = 0;
+    let isSectionInView = false;
+    let lastProgress = 0;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isSectionInView = true;
+            startScroll = window.scrollY;
+            sectionHeight = progressSection.offsetHeight;
+            setProgress(0);
+            lastProgress = 0;
+          } else {
+            isSectionInView = false;
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(progressSection);
+
+    const handleScroll = () => {
+      if (!isSectionInView) return;
+      
+      const currentScroll = window.scrollY;
+      const rawProgress = ((currentScroll - startScroll) / sectionHeight) * 100;
+      
+      // Smooth out the progress calculation
+      const targetProgress = Math.max(0, Math.min(100, rawProgress));
+      const smoothProgress = lastProgress + (targetProgress - lastProgress) * 0.1;
+      
+      lastProgress = smoothProgress;
+      setProgress(smoothProgress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -121,27 +178,39 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-2">
-              <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
+              <h1 
+                onClick={scrollToTop}
+                className="text-7xl lg:text-8xl font-bold mb-8 bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent leading-tight cursor-pointer hover:opacity-90 transition-opacity"
+              >
                 Effortless storytelling exponential impact
               </h1>
-              <p className="text-xl text-black/80 mb-8 max-w-2xl">
+              <p className="text-xl text-black/80 mb-12 max-w-2xl">
                 Transform your brand with our professional UGC content creation services. 
                 We bring your products to life with creativity and precision.
               </p>
-              <div className="flex gap-4">
-                <button className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors">
-                  Explore Services
+              <div className="flex flex-col sm:flex-row gap-6">
+                <button 
+                  onClick={() => window.location.href = '/products'}
+                  className="px-10 py-3 bg-secondary-orange text-white rounded-lg hover:bg-black transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-base font-medium"
+                >
+                  Products
                 </button>
-                <button className="bg-white text-black px-6 py-3 rounded-md border border-black hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={() => window.location.href = '/contact'}
+                  className="px-10 py-3 bg-white text-black rounded-lg border-2 border-black hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-base font-medium"
+                >
                   Contact Us
                 </button>
               </div>
             </div>
             {/* Right Content - Phone UI Card */}
-            <div className="hidden lg:block lg:col-span-1">
+            <div 
+              onClick={scrollToTop}
+              className="hidden lg:block lg:col-span-1 cursor-pointer hover:opacity-90 transition-opacity"
+            >
               <div className="relative w-[260px] h-[520px] mx-auto lg:ml-auto lg:mr-0">
                 {/* Phone Case */}
-                <div className="absolute inset-0 bg-white rounded-[2.8rem] shadow-2xl border-[14px] border-gray-900">
+                <div className="absolute inset-0 bg-white rounded-[2.8rem] shadow-[0_40px_80px_-12px_rgba(0,0,0,0.45)] border-[14px] border-gray-900">
                   {/* Notch */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[140px] h-[22px] bg-gray-900 rounded-b-3xl"></div>
                   {/* Screen */}
@@ -152,6 +221,60 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Company Logos */}
+      <div className="relative h-32 -mt-16 mb-16 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-full max-w-6xl mx-auto px-4">
+            {/* Company Logos */}
+            <div className="absolute inset-0 flex flex-col justify-center items-center">
+              <h3 className="text-base text-gray-500 mb-8 font-medium relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-[1px] after:bg-gray-300">Trusted by partners</h3>
+              <div className="flex justify-between w-[800px]">
+                {/* Logo 1 */}
+                <div className="w-32 h-16 flex items-center justify-center">
+                  <img 
+                    src="/assets/images/clients/company1-logo.svg" 
+                    alt="Company 1"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                {/* Logo 2 */}
+                <div className="w-32 h-16 flex items-center justify-center">
+                  <img 
+                    src="/assets/images/clients/company2-logo.png" 
+                    alt="Company 2"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                {/* Logo 3 */}
+                <div className="w-32 h-16 flex items-center justify-center">
+                  <img 
+                    src="/assets/images/clients/company3-logo.webp" 
+                    alt="Company 3"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                {/* Logo 4 */}
+                <div className="w-32 h-16 flex items-center justify-center">
+                  <img 
+                    src="/assets/images/clients/company4-logo.webp" 
+                    alt="Company 4"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                {/* Logo 5 */}
+                <div className="w-40 h-20 flex items-center justify-center">
+                  <img 
+                    src="/assets/images/clients/company5-logo.png" 
+                    alt="Company 5"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Creative UGC Section */}
       <section className="py-24 bg-white relative overflow-hidden">
@@ -329,6 +452,40 @@ const Home = () => {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Progress Bar Section */}
+      <section id="progress-section" className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              We are always 100% on budget, <span className="text-secondary-orange">don't worry</span>
+            </h2>
+          </motion.div>
+
+          <div className="max-w-3xl mx-auto">
+            <div className="relative h-4 bg-gray-100 rounded-full overflow-hidden">
+              <motion.div
+                style={{ width: `${progress}%` }}
+                className="absolute inset-y-0 left-0 bg-secondary-orange rounded-full"
+                transition={{ 
+                  duration: 0.3,
+                  ease: "linear"
+                }}
+              />
+            </div>
+            <div className="text-center mt-8">
+              <div className="text-6xl font-bold text-gray-900">
+                {Math.round(progress)}%
+              </div>
+            </div>
           </div>
         </div>
       </section>

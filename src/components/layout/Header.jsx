@@ -50,6 +50,13 @@ const Header = () => {
     return () => window.removeEventListener('resize', updateUnderlinePosition);
   }, [location.pathname]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled ? 'bg-white/80 backdrop-blur-md border-b border-gray-100' : 'bg-transparent border-transparent'
@@ -57,7 +64,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" onClick={scrollToTop} className="flex items-center space-x-2">
             <span className="text-2xl font-bold text-primary">CreativeSocially</span>
           </Link>
 
@@ -74,6 +81,7 @@ const Header = () => {
             
             <NavLink
               to="/"
+              onClick={scrollToTop}
               className={({ isActive }) =>
                 `text-lg font-medium transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-700 hover:text-primary'
@@ -84,6 +92,7 @@ const Header = () => {
             </NavLink>
             <NavLink
               to="/products"
+              onClick={scrollToTop}
               className={({ isActive }) =>
                 `text-lg font-medium transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-700 hover:text-primary'
@@ -105,6 +114,7 @@ const Header = () => {
               <div className="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                 <NavLink
                   to="/models"
+                  onClick={scrollToTop}
                   className={({ isActive }) =>
                     `block px-4 py-2 text-gray-700 hover:bg-secondary-peach/20 hover:text-primary transition-colors ${
                       isActive ? 'text-primary bg-secondary-peach/10' : ''
@@ -115,6 +125,7 @@ const Header = () => {
                 </NavLink>
                 <NavLink
                   to="/become-model"
+                  onClick={scrollToTop}
                   className={({ isActive }) =>
                     `block px-4 py-2 text-gray-700 hover:bg-secondary-peach/20 hover:text-primary transition-colors ${
                       isActive ? 'text-primary bg-secondary-peach/10' : ''
@@ -128,6 +139,7 @@ const Header = () => {
 
             <NavLink
               to="/about"
+              onClick={scrollToTop}
               className={({ isActive }) =>
                 `text-lg font-medium transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-700 hover:text-primary'
@@ -138,6 +150,7 @@ const Header = () => {
             </NavLink>
             <NavLink
               to="/contact"
+              onClick={scrollToTop}
               className={({ isActive }) =>
                 `text-lg font-medium transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-700 hover:text-primary'
@@ -202,6 +215,10 @@ const Header = () => {
           <nav className="py-4 space-y-2">
             <NavLink
               to="/"
+              onClick={() => {
+                setIsMenuOpen(false);
+                scrollToTop();
+              }}
               className={({ isActive }) =>
                 `block text-lg transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-600 hover:text-primary'
@@ -212,6 +229,10 @@ const Header = () => {
             </NavLink>
             <NavLink
               to="/products"
+              onClick={() => {
+                setIsMenuOpen(false);
+                scrollToTop();
+              }}
               className={({ isActive }) =>
                 `block text-lg transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-600 hover:text-primary'
@@ -227,6 +248,10 @@ const Header = () => {
               <div className="absolute left-0 mt-2 w-full bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                 <NavLink
                   to="/models"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    scrollToTop();
+                  }}
                   className={({ isActive }) =>
                     `block px-4 py-2 text-gray-700 hover:bg-secondary-peach/20 hover:text-primary transition-colors ${
                       isActive ? 'text-primary bg-secondary-peach/10' : ''
@@ -237,6 +262,10 @@ const Header = () => {
                 </NavLink>
                 <NavLink
                   to="/become-model"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    scrollToTop();
+                  }}
                   className={({ isActive }) =>
                     `block px-4 py-2 text-gray-700 hover:bg-secondary-peach/20 hover:text-primary transition-colors ${
                       isActive ? 'text-primary bg-secondary-peach/10' : ''
@@ -249,6 +278,10 @@ const Header = () => {
             </div>
             <NavLink
               to="/about"
+              onClick={() => {
+                setIsMenuOpen(false);
+                scrollToTop();
+              }}
               className={({ isActive }) =>
                 `block text-lg transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-600 hover:text-primary'
@@ -259,6 +292,10 @@ const Header = () => {
             </NavLink>
             <NavLink
               to="/contact"
+              onClick={() => {
+                setIsMenuOpen(false);
+                scrollToTop();
+              }}
               className={({ isActive }) =>
                 `block text-lg transition-colors ${
                   isActive ? 'text-primary' : 'text-gray-600 hover:text-primary'
