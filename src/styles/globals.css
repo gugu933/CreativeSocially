@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply text-text min-h-screen;
+  }
+
+  * {
+    @apply font-sans;
+  }
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 0%;
+    background-size: 400% 400%;
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    background-position: 100% 0%;
+    background-size: 400% 400%;
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    background-position: 100% 100%;
+    background-size: 400% 400%;
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    background-position: 0% 100%;
+    background-size: 400% 400%;
+    filter: hue-rotate(270deg);
+  }
+  100% {
+    background-position: 0% 0%;
+    background-size: 400% 400%;
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes gradient-bubble {
+  0% {
+    opacity: 0.06;
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg) blur(6px);
+  }
+  50% {
+    opacity: 0.02;
+    background-position: 100% 50%;
+    filter: hue-rotate(180deg) blur(8px);
+  }
+  100% {
+    opacity: 0.06;
+    background-position: 0% 50%;
+    filter: hue-rotate(360deg) blur(6px);
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .btn {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary text-text hover:bg-secondary-orange focus:ring-primary;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-secondary-peach text-gray-900 hover:bg-secondary-pink hover:text-text focus:ring-secondary-pink;
+  }
+
+  .nav-link {
+    @apply text-text hover:text-primary transition-colors duration-200;
+  }
+
+  .section-title {
+    @apply text-4xl font-bold mb-4 text-text;
+  }
+
+  .section-subtitle {
+    @apply text-xl text-text/80 mb-8;
+  }
+
+  .animate-gradient-flow {
+    animation: gradient-flow 20s ease infinite;
+    background-size: 400% 400%;
+    transition: all 0.5s ease;
+  }
+
+  .animate-gradient-bubble {
+    animation: gradient-bubble 20s ease infinite;
+    mix-blend-mode: plus-lighter;
+    opacity: 0.05;
+  }
+} 
