@@ -62,14 +62,14 @@ const Header = () => {
       isScrolled ? 'bg-white/80 backdrop-blur-md border-b border-gray-100' : 'bg-transparent border-transparent'
     }`}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center h-20">
           {/* Logo */}
-          <Link to="/" onClick={scrollToTop} className="flex items-center space-x-2">
+          <Link to="/" onClick={scrollToTop} className="flex items-center space-x-2 lg:ml-[170px]">
             <span className="text-2xl font-bold text-primary">CreativeSocially</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav ref={navRef} className="hidden md:flex items-center space-x-8 relative">
+          <nav ref={navRef} className="hidden md:flex items-center space-x-5 relative lg:ml-12">
             {/* Animated Underline */}
             <div
               className="absolute bottom-[-4px] h-0.5 bg-primary transition-all duration-300 ease-in-out"
@@ -162,7 +162,7 @@ const Header = () => {
           </nav>
 
           {/* Cart Icon */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 ml-auto lg:mr-20">
             <button
               onClick={openCart}
               className="relative p-2 text-gray-600 hover:text-primary transition-colors"

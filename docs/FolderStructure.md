@@ -1,4 +1,4 @@
-# Creative Socially App Folder Structure
+# **Creative Socially App Folder Structure**
 
 ```
 creative-socially/

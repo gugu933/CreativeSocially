@@ -12,58 +12,18 @@ const Footer = () => {
 
       <div className="container mx-auto px-4 relative">
         {/* Main Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary-orange bg-clip-text text-transparent">
-              Creative Socially
-            </h3>
-            <p className="text-gray-400 leading-relaxed">
-              We create compelling UGC content that helps brands connect with their audience in authentic ways.
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-semibold mb-6 text-white">Quick Links</h3>
-            <ul className="space-y-3">
-              <li>
-                <motion.a 
-                  href="/" 
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                  whileHover={{ x: 5 }}
-                >
-                  <span className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Home
-                </motion.a>
-              </li>
-              <li>
-                <motion.a 
-                  href="/services" 
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                  whileHover={{ x: 5 }}
-                >
-                  <span className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Services
-                </motion.a>
-              </li>
-              <li>
-                <motion.a 
-                  href="/portfolio" 
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                  whileHover={{ x: 5 }}
-                >
-                  <span className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Portfolio
-                </motion.a>
-              </li>
-            </ul>
+        <div className="flex flex-col items-center max-w-4xl mx-auto gap-12 mb-16">
+          {/* Contact Info */}
+          <div className="text-center space-y-2">
+            <p className="text-gray-400">CVR: 45489787</p>
+            <p className="text-gray-400">Copenhagen</p>
+            <p className="text-gray-400">Phone: +45 50 28 42 41</p>
           </div>
 
           {/* Social Media Section */}
-          <div className="lg:col-span-2">
-            <h3 className="text-xl font-semibold mb-6 text-white">Connect With Us</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="w-full">
+            <h3 className="text-xl font-semibold mb-6 text-white text-center">Connect With Us</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 max-w-3xl mx-auto">
               <motion.a 
                 href="#" 
                 className="group relative overflow-hidden rounded-lg bg-gray-800 p-4 hover:bg-primary/10 transition-colors"
@@ -121,6 +81,21 @@ const Footer = () => {
                     <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
                   </svg>
                   <span className="text-sm text-gray-400 group-hover:text-primary transition-colors">TikTok</span>
+                </div>
+              </motion.a>
+
+              <motion.a 
+                href="#" 
+                className="group relative overflow-hidden rounded-lg bg-gray-800 p-4 hover:bg-primary/10 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary-orange/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative flex flex-col items-center gap-2">
+                  <svg className="w-6 h-6 text-primary group-hover:text-secondary-orange transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                  <span className="text-sm text-gray-400 group-hover:text-primary transition-colors">LinkedIn</span>
                 </div>
               </motion.a>
             </div>
