@@ -20,6 +20,8 @@ const Home = () => {
     description: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Add form handler
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -54,10 +56,15 @@ const Home = () => {
     const loadProducts = async () => {
       try {
         const products = await shopifyClient.product.fetchAll();
+        if (!products) {
+          console.log('No products found');
+          return;
+        }
+        
         // Find subscription product (assuming it has "subscription" in the title)
         const subscription = products.find(p => 
-          p.title.toLowerCase().includes('subscription') || 
-          p.productType.toLowerCase().includes('subscription')
+          (p?.title?.toLowerCase() || '').includes('subscription') || 
+          (p?.productType?.toLowerCase() || '').includes('subscription')
         );
         setSubscriptionPlan(subscription);
         // Filter out subscription from regular products
@@ -87,9 +94,10 @@ const Home = () => {
             isSectionInView = true;
             startScroll = window.scrollY;
             sectionHeight = progressSection.offsetHeight;
-            setProgress(0);
-            lastProgress = 0;
-          } else if (!entry.isIntersecting && hasReached100) {
+            if (!hasReached100) {
+              setProgress(lastProgress);
+            }
+          } else {
             isSectionInView = false;
           }
         });
@@ -105,9 +113,9 @@ const Home = () => {
       const currentScroll = window.scrollY;
       const rawProgress = ((currentScroll - startScroll) / sectionHeight) * 100;
       
-      // Smooth out the progress calculation
+      // Smooth out the progress calculation and ensure it only goes up
       const targetProgress = Math.max(0, Math.min(100, rawProgress));
-      const smoothProgress = lastProgress + (targetProgress - lastProgress) * 0.1;
+      const smoothProgress = Math.max(lastProgress, lastProgress + (targetProgress - lastProgress) * 0.1);
       
       lastProgress = smoothProgress;
       
@@ -225,15 +233,15 @@ const Home = () => {
   return (
     <>
       <style>{styles}</style>
-    <div className="min-h-screen text-text">
+    <div className="min-h-screen text-text overflow-x-hidden">
       {/* Banner Section */}
-      <section className="relative h-[95vh] flex items-start overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-start overflow-hidden pb-32">
         {/* Animated Gradient Background */}
         <div className="absolute inset-0" style={{ zIndex: 0 }}>
           {/* Fixed Banner Shape */}
           <div className="absolute inset-0 overflow-hidden" 
                style={{
-                   clipPath: 'polygon(0 0, 100% 0, 100% 60%, 0 100%)'
+                   clipPath: 'polygon(100% 0, 100% 30%, 0 61%, 0 0)'
                }}>
             {/* Flowing Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-purple-500 to-secondary-orange bg-[length:400%_400%] animate-gradient-flow">
@@ -307,16 +315,16 @@ const Home = () => {
           {/* White Bottom Section */}
           <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-white" 
                style={{
-                 clipPath: 'polygon(0 100%, 100% 100%, 100% 0, 0 40%)'
+                 clipPath: 'polygon(0 85%, 100% 70%, 100% 100%, 0 100%)'
                }}>
           </div>
         </div>
         
         {/* Content */}
         <div className="container mx-auto px-4 lg:px-16 relative" style={{ zIndex: 1 }}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-2 lg:mt-24 lg:ml-[120px] relative">
+            <div className="lg:col-span-2 lg:mt-24 lg:ml-[120px] relative pt-24 lg:pt-0">
               <h1 
                 onClick={scrollToTop}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-10 bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent leading-[1.1] cursor-pointer hover:opacity-90 transition-opacity max-w-[600px]"
@@ -327,7 +335,7 @@ const Home = () => {
                 Transform your brand with our professional UGC content creation services. 
                 We bring your products to life with creativity and precision.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 mb-12 lg:mb-0">
                 <button 
                   onClick={() => window.location.href = '/products'}
                   className="relative px-8 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-300 text-base font-medium shadow-md hover:shadow-lg"
@@ -350,7 +358,7 @@ const Home = () => {
               style={{ zIndex: 1 }}
             >
               {/* White Card Background with Steps */}
-              <div className="absolute top-20 left-[20px] w-[600px] h-auto min-h-[500px] bg-white/90 rounded-[32px] shadow-lg transform rotate-[-0deg] p-6 sm:p-8 lg:p-10" style={{ zIndex: 1 }}>
+              <div className="absolute top-20 left-[20px] w-[600px] max-w-[90vw] h-auto min-h-[500px] bg-white/90 rounded-[32px] shadow-lg transform rotate-[-0deg] p-6 sm:p-8 lg:p-10" style={{ zIndex: 1 }}>
                 <div className="relative h-full pl-[110px] lg:pl-[160px]">
                   <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-6 lg:mb-8">How it works</h3>
                   <div className="space-y-6 lg:space-y-8">
@@ -413,7 +421,7 @@ const Home = () => {
               </div>
               
               {/* Phone UI */}
-              <div className="relative w-[260px] h-[520px] mx-auto lg:ml-[-70px] lg:mr-auto lg:mt-32" style={{ zIndex: 1 }}>
+              <div className="relative w-[260px] h-[520px] mx-auto lg:ml-[-70px] lg:mr-auto lg:mt-24 mb-16" style={{ zIndex: 1 }}>
                 {/* Phone Case */}
                 <div className="absolute inset-0 bg-black rounded-[40px] shadow-[0_40px_80px_-12px_rgba(0,0,0,0.45)]">
                   {/* Screen */}
@@ -445,7 +453,7 @@ const Home = () => {
       </section>
 
       {/* Company Logos */}
-      <div className="relative py-16 mt-16 bg-white">
+      <div className="relative py-16 bg-white mt-[-8rem]">
         <div className="container mx-auto px-4 lg:px-16">
           {/* Company Logos */}
           <div className="flex flex-col justify-center items-center">
@@ -499,14 +507,14 @@ const Home = () => {
         </div>
       </div>
 
-    {/* Creative UGC Section */}
-    <section className="py-24 bg-white relative overflow-hidden">
+      {/* Creative UGC Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left Side - Creative Collage */}
-          <div className="relative">
-            <div className="grid grid-cols-3 gap-3 max-w-[500px] mx-auto">
-              {/* Main Large Image */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left Side - Creative Collage */}
+            <div className="relative">
+              <div className="grid grid-cols-3 gap-3 max-w-[500px] mx-auto">
+                {/* Main Large Image */}
                 <div className="col-span-2 row-span-2 aspect-square rounded-2xl overflow-hidden relative group">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary-peach/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
                   <img 
@@ -518,7 +526,7 @@ const Home = () => {
                   />
                 </div>
 
-              {/* Smaller Images */}
+                {/* Smaller Images */}
                 <div className="aspect-square rounded-2xl overflow-hidden relative group">
                   <div className="absolute inset-0 bg-gradient-to-br from-secondary-orange/20 to-primary/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
                   <img 
@@ -541,7 +549,7 @@ const Home = () => {
                   />
                 </div>
 
-              {/* Bottom Row */}
+                {/* Bottom Row */}
                 <div className="aspect-square rounded-2xl overflow-hidden relative group">
                   <div className="absolute inset-0 bg-gradient-to-br from-secondary-peach/20 to-primary/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
                   <img 
@@ -575,104 +583,104 @@ const Home = () => {
                   />
                 </div>
               </div>
-          </div>
+            </div>
 
-          {/* Right Side - Text Content */}
-          <div>
+            {/* Right Side - Text Content */}
+            <div>
               <div>
-              <h2 className="text-4xl font-bold mb-6 text-gray-900">Crafting Digital Stories</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                We transform ordinary products into extraordinary narratives. Through the lens of creativity, 
-                we capture moments that resonate with your audience, turning viewers into customers and 
-                customers into advocates.
-              </p>
-              <div className="grid grid-cols-3 gap-6">
-                <div className="text-center">
+                <h2 className="text-4xl font-bold mb-6 text-gray-900">Crafting Digital Stories</h2>
+                <p className="text-lg text-gray-600 mb-8">
+                  We transform ordinary products into extraordinary narratives. Through the lens of creativity, 
+                  we capture moments that resonate with your audience, turning viewers into customers and 
+                  customers into advocates.
+                </p>
+                <div className="grid grid-cols-3 gap-6">
+                  <div className="text-center">
                     <div className="text-2xl font-bold text-primary mb-2">20+</div>
-                  <div className="text-sm text-gray-600">Videos Created</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary mb-2">98%</div>
-                  <div className="text-sm text-gray-600">Client Satisfaction</div>
-                </div>
-                <div className="text-center">
+                    <div className="text-sm text-gray-600">Videos Created</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary mb-2">98%</div>
+                    <div className="text-sm text-gray-600">Client Satisfaction</div>
+                  </div>
+                  <div className="text-center">
                     <div className="text-2xl font-bold text-primary mb-2">1M+</div>
-                  <div className="text-sm text-gray-600">Views Generated</div>
+                    <div className="text-sm text-gray-600">Views Generated</div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    {/* Featured Collection */}
-    <section className="py-16">
+      {/* Featured Collection */}
+      <section className="py-16">
         <div className="container mx-auto px-4 lg:px-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Collection</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover our range of professional content creation services
-          </p>
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Collection</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Discover our range of professional content creation services
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              id: 1,
-              title: "Social Media Management",
-              description: "Complete social media management including content creation, scheduling, and engagement.",
-              image: "/images/social-media.jpg"
-            },
-            {
-              id: 2,
-              title: "Content Creation",
-              description: "Professional content creation for all your social media platforms and marketing needs.",
-              image: "/images/content-creation.jpg"
-            },
-            {
-              id: 3,
-              title: "Brand Strategy",
-              description: "Comprehensive brand strategy development to help your business grow and succeed.",
-              image: "/images/brand-strategy.jpg"
-            }
-          ].map((product, index) => (
-            <motion.div
-              key={product.id}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                id: 1,
+                title: "Social Media Management",
+                description: "Complete social media management including content creation, scheduling, and engagement.",
+                image: "/images/social-media.jpg"
+              },
+              {
+                id: 2,
+                title: "Content Creation",
+                description: "Professional content creation for all your social media platforms and marketing needs.",
+                image: "/images/content-creation.jpg"
+              },
+              {
+                id: 3,
+                title: "Brand Strategy",
+                description: "Comprehensive brand strategy development to help your business grow and succeed.",
+                image: "/images/brand-strategy.jpg"
+              }
+            ].map((product, index) => (
+              <motion.div
+                key={product.id}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all cursor-pointer group"
-              onClick={() => window.location.href = '/products'}
-            >
-              {/* Product Image */}
+                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all cursor-pointer group"
+                onClick={() => window.location.href = '/products'}
+              >
+                {/* Product Image */}
                 <div className="aspect-[4/3] relative bg-gray-100 overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="absolute inset-0 w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
-                />
+                  />
                 </div>
 
-              {/* Product Info */}
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 relative inline-block group-hover:after:content-[''] group-hover:after:absolute group-hover:after:left-0 group-hover:after:bottom-0 group-hover:after:w-full group-hover:after:h-0.5 group-hover:after:bg-primary group-hover:after:transition-all group-hover:after:duration-300">
-                  {product.title}
-                </h3>
-                <p className="text-gray-600 line-clamp-2">
-                  {product.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+                {/* Product Info */}
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 relative inline-block group-hover:after:content-[''] group-hover:after:absolute group-hover:after:left-0 group-hover:after:bottom-0 group-hover:after:w-full group-hover:after:h-0.5 group-hover:after:bg-primary group-hover:after:transition-all group-hover:after:duration-300">
+                    {product.title}
+                  </h3>
+                  <p className="text-gray-600 line-clamp-2">
+                    {product.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
         </div>
       </div>
     </section>
@@ -711,68 +719,227 @@ const Home = () => {
         </div>
       </section>
 
-    {/* Who We Are Section */}
-    <section className="py-24 relative">
-      {/* Background with diagonal cut */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gray-50" 
-             style={{
-               clipPath: 'polygon(0 15%, 100% 0%, 100% 100%, 0% 100%)'
-             }}>
-        </div>
-      </div>
-
-      {/* Content */}
-        <div className="container mx-auto px-4 lg:px-16 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Who We Are</h2>
-          <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Welcome to Creative Socially, where passion meets innovation in brand storytelling. Based in vibrant Copenhagen, we're a dynamic duo dedicated to transforming how brands connect with their audience.
+      {/* Pricing Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Smart brands dont overpay <br />– neither should you
+            </h2>
+            <p className="text-lg text-gray-600">
+              Unluck new customers and receive your benefits from day 1 <br />with Creative Socially
             </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Our home studio is more than just a space—it's a creative laboratory where we craft compelling narratives through professional ad campaigns, engaging product videos, and striking photography.
-            </p>
-            <div className="grid grid-cols-2 gap-8 pt-6">
-              <div className="border-l-4 border-primary pl-4">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Our Studio</h3>
-                <p className="text-gray-600">A creative haven where ideas come to life through state-of-the-art equipment and innovative techniques.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Essential Plan */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-3 h-3 bg-gray-900 rounded-full"></div>
+                <h3 className="text-xl font-semibold text-gray-900">Creative Socially On-Demand</h3>
               </div>
-              <div className="border-l-4 border-secondary-orange pl-4">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Our Network</h3>
-                <p className="text-gray-600">A diverse roster of talent speaking multiple languages, including our beloved animal models.</p>
+              
+              <div className="mb-8">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-gray-900"> 1000 - 4000</span>
+                  <span className="text-xl text-gray-900">DKK</span>
+                  <span className="text-gray-500 text-sm">/ product</span>
+                </div>
               </div>
+
+              <button className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg mb-8 hover:bg-gray-800 transition-colors">
+                View our products
+              </button>
+
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Hand-pick your own creators (humans or animals)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Pay only for the content you need — no ongoing commitment</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Content quality control and feedback loops</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Content can be created in our own studio or a remote location</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Generate sales quickly</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Choose your own content style</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Administer your own costs easily</span>
+                </li>
+              </ul>
             </div>
+
+            {/* Done-For-You Plan */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg border-4 border-primary shadow-primary/100">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                <h3 className="text-xl font-semibold text-gray-900">Creative Socially Plus</h3>
+              </div>
+              
+              <div className="mb-8">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-gray-900">7500</span>
+                  <span className="text-xl text-gray-900">DKK</span>
+                  <span className="text-gray-500 text-sm">/ month</span>
+                </div>
+              </div>
+
+              <button className="w-full bg-primary text-white py-3 px-6 rounded-lg mb-8 hover:bg-primary/90 transition-colors">
+              Boost my sales
+              </button>
+
+            
+
+              <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">TikTok, Instagram, LinkedIn — we handle them all</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">4 monthly content videos in a professional studio</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">10 monthly pictures in a professional studio</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">1 hour of free consultation and strategy session</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Hand-pick your own creators (humans or animals)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Content quality control and feedback loops</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Ongoing strategy and content optimization</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Monthly strategy session</span>
+                </li><li className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span className="text-gray-700">Prioritized support</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Who We Are Section */}
+      <section className="py-24 relative">
+        {/* Background with diagonal cut */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gray-50" 
+               style={{
+                 clipPath: 'polygon(0 15%, 100% 0%, 100% 100%, 0% 100%)'
+               }}>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="container mx-auto px-4 lg:px-16 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Who We Are</h2>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative"
-          >
-            <div className="grid grid-cols-2 gap-4 relative z-10">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Welcome to Creative Socially, where passion meets innovation in brand storytelling. Based in vibrant Copenhagen, we're a dynamic duo dedicated to transforming how brands connect with their audience.
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Our home studio is more than just a space—it's a creative laboratory where we craft compelling narratives through professional ad campaigns, engaging product videos, and striking photography.
+              </p>
+              <div className="grid grid-cols-2 gap-8 pt-6">
+                <div className="border-l-4 border-primary pl-4">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Our Studio</h3>
+                  <p className="text-gray-600">A creative haven where ideas come to life through state-of-the-art equipment and innovative techniques.</p>
+                </div>
+                <div className="border-l-4 border-secondary-orange pl-4">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Our Network</h3>
+                  <p className="text-gray-600">A diverse roster of talent speaking multiple languages, including our beloved animal models.</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative"
+            >
+              <div className="grid grid-cols-2 gap-4 relative z-10">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
                   className="aspect-[4/5] bg-white rounded-2xl shadow-lg overflow-hidden relative"
                 >
                   <img 
@@ -780,16 +947,16 @@ const Home = () => {
                     alt="Gustav Emil Aller"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent group-hover:opacity-0 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent group-hover:opacity-0 transition-opacity"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent z-10">
                     <h3 className="text-white font-medium text-lg">Gustav Emil Aller</h3>
-                </div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
                   className="aspect-[4/5] bg-white rounded-2xl shadow-lg overflow-hidden translate-y-8 relative"
                 >
                   <img 
@@ -797,143 +964,19 @@ const Home = () => {
                     alt="Hannah Kjølby Lysager"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-bl from-secondary-orange/20 to-transparent group-hover:opacity-0 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-bl from-secondary-orange/20 to-transparent group-hover:opacity-0 transition-opacity"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent z-10">
                     <h3 className="text-white font-medium text-lg">Hannah Kjølby Lysager</h3>
-                </div>
-              </motion.div>
-            </div>
-            {/* Decorative Elements */}
-            <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
-            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-secondary-orange/10 rounded-full blur-2xl"></div>
-          </motion.div>
+                  </div>
+                </motion.div>
+              </div>
+              {/* Decorative Elements */}
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-secondary-orange/10 rounded-full blur-2xl"></div>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
-
-    {/* Contact Us Section */}
-    <section className="py-24 bg-gray-50">
-        <div className="container mx-auto px-4 lg:px-16">
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Get in Touch</h2>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
-            <p className="text-lg text-gray-600">
-              Ready to transform your brand's story? We'd love to hear from you.
-            </p>
-          </motion.div>
-
-          <motion.form
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6"
-              onSubmit={handleSubmit}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium text-gray-700">Name</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  name="name" 
-                  required
-                  className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-white text-gray-900 placeholder-gray-400" 
-                  placeholder="Your name"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-gray-700">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  required
-                  className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-white text-gray-900 placeholder-gray-400" 
-                  placeholder="your@email.com"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone number (optional)</label>
-              <input 
-                type="tel" 
-                id="phone" 
-                name="phone"
-                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-white text-gray-900 placeholder-gray-400" 
-                placeholder="+45 XX XX XX XX"
-              />
-            </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
-                <input 
-                  type="text" 
-                  name="company"
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-white text-gray-900 placeholder-gray-400"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Describe your situation</label>
-                <textarea 
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-white text-gray-900 placeholder-gray-400 min-h-[100px] resize-y"
-                  placeholder="Tell us about your needs and what you're looking for..."
-                required
-                />
-            </div>
-
-            <div className="flex items-center justify-between pt-4">
-              <p className="text-sm text-gray-500">
-                We'll get back to you within 24 hours
-              </p>
-              <button 
-                type="submit"
-                className="px-8 py-3 bg-primary text-white rounded-lg hover:bg-secondary-orange transition-colors duration-300 flex items-center gap-2"
-              >
-                Send Message
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-            </div>
-          </motion.form>
-
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-16 pt-8 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8 text-center"
-          >
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Us</h3>
-              <a href="mailto:info@creativesocially.com" className="text-primary hover:text-secondary-orange transition-colors">
-                info@creativesocially.com
-              </a>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Location</h3>
-              <p className="text-gray-600">Copenhagen, Denmark</p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
+      </section>
 
       {/* FAQ Section */}
       <section className="py-24 bg-white">
@@ -1103,17 +1146,18 @@ const Home = () => {
 
               <button 
                 type="submit"
-                className="w-full py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-300 font-medium"
+                disabled={isSubmitting}
+                className="w-full py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Submit
+                {isSubmitting ? 'Sending...' : 'Submit'}
               </button>
             </form>
           </div>
         </div>
       )}
-  </div>
+    </div>
   </>
-);
+  );
 };
 
 export default Home; 

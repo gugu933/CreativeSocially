@@ -17,7 +17,10 @@ const Footer = () => {
           <div className="text-center space-y-2">
             <p className="text-gray-400">CVR: 45489787</p>
             <p className="text-gray-400">Copenhagen</p>
-            <p className="text-gray-400">Phone: +45 50 28 42 41</p>
+            <p className="text-gray-400">+45 50 28 42 41</p>
+            <a href="mailto:info@creativesocially.com" className="text-gray-400 hover:text-primary transition-colors">
+              info@creativesocially.com
+            </a>
           </div>
 
           {/* Social Media Section */}
@@ -109,7 +112,7 @@ const Footer = () => {
           </div>
           <div className="relative flex justify-center">
             <span className="px-4 bg-gray-900 text-gray-400 text-sm">
-              &copy; 2025 Creative Socially. All rights reserved.
+              &copy; 2025 Creative Socially
             </span>
           </div>
         </div>
