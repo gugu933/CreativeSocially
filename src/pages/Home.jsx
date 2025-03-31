@@ -228,6 +228,31 @@ const Home = () => {
       background-color: var(--primary-color);
       animation: border-line 1.5s linear infinite;
     }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .animate-scroll {
+      animation: scroll 30s linear infinite;
+      display: flex;
+      gap: 2rem;
+      padding: 0 1rem;
+      will-change: transform;
+      width: max-content;
+    }
+
+    .logo-container {
+      display: flex;
+      gap: 2rem;
+      padding: 0 1rem;
+      width: max-content;
+    }
   `;
 
   return (
@@ -329,11 +354,11 @@ const Home = () => {
                 onClick={scrollToTop}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-10 bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent leading-[1.1] cursor-pointer hover:opacity-90 transition-opacity max-w-[600px]"
               >
-                Effortless storytelling exponential impact
+                Content creation to grow your revenue
               </h1>
               <p className="text-lg sm:text-xl text-black/80 mb-8 max-w-md">
-                Transform your brand with our professional UGC content creation services. 
-                We bring your products to life with creativity and precision.
+                Transform your brand with our professional content creation services. 
+                We turn your products into powerful stories with inclusive casting and high-converting content.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-12 lg:mb-0">
                 <button 
@@ -368,8 +393,8 @@ const Home = () => {
                         <span className="text-xl lg:text-2xl font-bold text-primary">1</span>
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">Choose your <span className="text-primary border-b-2 border-primary">content</span></h4>
-                        <p className="text-sm lg:text-base text-gray-600 mt-1">Select your perfect content package</p>
+                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">🎯 Pick a  <span className="text-primary border-b-2 border-primary">package</span></h4>
+                        <p className="text-sm lg:text-base text-gray-600 mt-1">We've got content options for every budget and goal.</p>
                       </div>
                     </div>
 
@@ -379,8 +404,8 @@ const Home = () => {
                         <span className="text-xl lg:text-2xl font-bold text-primary">2</span>
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">Share your <span className="text-primary border-b-2 border-primary">vision</span></h4>
-                        <p className="text-sm lg:text-base text-gray-600 mt-1">Tell us your brand story and goals</p>
+                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">🗣️ Tell us your  <span className="text-primary border-b-2 border-primary">story</span></h4>
+                        <p className="text-sm lg:text-base text-gray-600 mt-1">Tell us what you sell</p>
                       </div>
                     </div>
 
@@ -390,8 +415,10 @@ const Home = () => {
                         <span className="text-xl lg:text-2xl font-bold text-primary">3</span>
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-base lg:text-lg font-semibold text-gray-900"><span className="text-primary border-b-2 border-primary">We</span> create & strategize</h4>
-                        <p className="text-sm lg:text-base text-gray-600 mt-1">Professional content with latest trends</p>
+                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">
+  🧠 <span className="text-primary border-b-2 border-primary">We</span> plan & Create
+</h4>
+                        <p className="text-sm lg:text-base text-gray-600 mt-1">We produce professional content with latest trends</p>
                       </div>
                     </div>
 
@@ -401,8 +428,10 @@ const Home = () => {
                         <span className="text-xl lg:text-2xl font-bold text-primary">4</span>
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-base lg:text-lg font-semibold text-gray-900"><span className="text-primary border-b-2 border-primary">Voila!</span> Ready to post</h4>
-                        <p className="text-sm lg:text-base text-gray-600 mt-1">Your optimized content delivered</p>
+                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">
+  🚀 <span className="text-primary border-b-2 border-primary">Content</span>, ready to post
+</h4>
+                        <p className="text-sm lg:text-base text-gray-600 mt-1">You get finished videos, ready to upload</p>
                       </div>
                     </div>
 
@@ -412,8 +441,8 @@ const Home = () => {
                         <span className="text-xl lg:text-2xl font-bold text-primary">5</span>
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">Cash in your <span className="text-primary border-b-2 border-primary">profits</span></h4>
-                        <p className="text-sm lg:text-base text-gray-600 mt-1">Watch your revenue soar</p>
+                        <h4 className="text-base lg:text-lg font-semibold text-gray-900">💸 Get more <span className="text-primary border-b-2 border-primary">sales</span></h4>
+                        <p className="text-sm lg:text-base text-gray-600 mt-1">Watch likes, views, and orders roll in</p>
                       </div>
                     </div>
                   </div>
@@ -453,7 +482,7 @@ const Home = () => {
       </section>
 
       {/* Company Logos */}
-      <div className="relative py-16 bg-white mt-[-8rem]">
+      <div className="relative py-16 bg-white mt-[-8rem] overflow-hidden">
         <div className="container mx-auto px-4 lg:px-16">
           {/* Company Logos */}
           <div className="flex flex-col justify-center items-center">
@@ -461,229 +490,374 @@ const Home = () => {
               Our Dedicated Clients
               <div className="w-24 h-0.5 bg-primary mx-auto mt-4 rounded-full"></div>
             </h3>
-            <div className="flex flex-wrap justify-center gap-8 sm:gap-12 w-full max-w-[1000px]">
-              {/* Logo 1 */}
-              <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center">
-                <img 
-                  src="/assets/images/clients/company1-logo.svg" 
-                  alt="Company 1"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              {/* Logo 2 */}
-              <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center">
-                <img 
-                  src="/assets/images/clients/company2-logo.png" 
-                  alt="Company 2"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              {/* Logo 3 */}
-              <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center">
-                <img 
-                  src="/assets/images/clients/company3-logo.webp" 
-                  alt="Company 3"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              {/* Logo 4 */}
-              <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center">
-                <img 
-                  src="/assets/images/clients/company4-logo.webp" 
-                  alt="Company 4"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              {/* Logo 5 */}
-              <div className="w-32 sm:w-40 h-16 sm:h-20 flex items-center justify-center">
-                <img 
-                  src="/assets/images/clients/company5-logo.png" 
-                  alt="Company 5"
-                  className="w-full h-full object-contain"
-                />
+            
+            {/* Animated Logo Container */}
+            <div className="relative w-full overflow-hidden">
+              {/* First Row of Logos */}
+              <div className="animate-scroll">
+                {/* First set of logos */}
+                <div className="logo-container">
+                  {/* Logo 1 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company1-logo.svg" 
+                      alt="Company 1"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 2 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company2-logo.png" 
+                      alt="Company 2"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 3 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company3-logo.webp" 
+                      alt="Company 3"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 4 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company4-logo.webp" 
+                      alt="Company 4"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 5 */}
+                  <div className="w-32 sm:w-40 h-16 sm:h-20 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company5-logo.png" 
+                      alt="Company 5"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 6 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company6-logo.png" 
+                      alt="Company 6"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 7 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company7-logo.png" 
+                      alt="Company 7"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+                {/* Second set of logos */}
+                <div className="logo-container">
+                  {/* Logo 1 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company1-logo.svg" 
+                      alt="Company 1"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 2 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company2-logo.png" 
+                      alt="Company 2"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 3 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company3-logo.webp" 
+                      alt="Company 3"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 4 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company4-logo.webp" 
+                      alt="Company 4"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 5 */}
+                  <div className="w-32 sm:w-40 h-16 sm:h-20 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company5-logo.png" 
+                      alt="Company 5"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 6 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company6-logo.png" 
+                      alt="Company 6"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Logo 7 */}
+                  <div className="w-24 sm:w-32 h-12 sm:h-16 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src="/assets/images/clients/company7-logo.png" 
+                      alt="Company 7"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
+
+
           </div>
         </div>
       </div>
 
-      {/* Creative UGC Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <div className="container mx-auto px-4 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left Side - Creative Collage */}
-            <div className="relative">
-              <div className="grid grid-cols-3 gap-3 max-w-[500px] mx-auto">
-                {/* Main Large Image */}
-                <div className="col-span-2 row-span-2 aspect-square rounded-2xl overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary-peach/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
-                  <img 
-                    src="/assets/images/collage/main-image.webp"
-                    alt="Main creative content"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    fetchpriority="high"
-                  />
-                </div>
+      {/* Inclusive Content Creation Section */}
+      <section className="py-24 bg-gray-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 lg:px-8 max-w-[1600px] relative">
+          {/* Title */}
+          <div className="max-w-4xl mx-auto text-center mb-16">
+            <div className="relative inline-block">
+              <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-secondary-orange/10 to-primary/10 rounded-full blur-2xl"></div>
+              <h2 className="relative text-5xl font-bold text-gray-900 mb-6">
+                Real People, <span className="text-primary">Real Stories</span>
+              </h2>
+            </div>
+            <p className="text-lg text-gray-600">
+              Our diverse model network brings authenticity to your content, making your brand relatable to every audience
+            </p>
+          </div>
 
-                {/* Smaller Images */}
-                <div className="aspect-square rounded-2xl overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-secondary-orange/20 to-primary/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
-                  <img 
-                    src="/assets/images/collage/small-image-1.jpg"
-                    alt="Creative content 1"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    fetchpriority="high"
-                  />
-                </div>
-                
-                <div className="aspect-square rounded-2xl overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary-orange/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
-                  <img 
-                    src="/assets/images/collage/small-image-2.jpg"
-                    alt="Creative content 2"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    fetchpriority="high"
-                  />
-                </div>
-
-                {/* Bottom Row */}
-                <div className="aspect-square rounded-2xl overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-secondary-peach/20 to-primary/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
-                  <img 
-                    src="/assets/images/collage/small-image-3.jpg"
-                    alt="Creative content 3"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    fetchpriority="high"
-                  />
-                </div>
-
-                <div className="aspect-square rounded-2xl overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary-pink/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
-                  <img 
-                    src="/assets/images/collage/small-image-4.jpg"
-                    alt="Creative content 4"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    fetchpriority="high"
-                  />
-                </div>
-
-                <div className="aspect-square rounded-2xl overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-secondary-orange/20 to-secondary-peach/20 opacity-0 group-hover:opacity-0 transition-opacity duration-300"></div>
-                  <img 
-                    src="/assets/images/collage/small-image-5.jpeg"
-                    alt="Creative content 5"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    fetchpriority="high"
-                  />
-                </div>
+          {/* Content Grid */}
+          <div className="flex justify-center items-center gap-8">
+            {/* Authentic Representation Card */}
+            <div className="bg-white p-8 rounded-2xl shadow-lg w-[400px] text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
               </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Diverse Model Network</h3>
+              <p className="text-gray-600">Our network features models of all ages, sizes, ethnicities, and identities — so your brand reflects real life and speaks to real customers</p>
             </div>
 
-            {/* Right Side - Text Content */}
-            <div>
-              <div>
-                <h2 className="text-4xl font-bold mb-6 text-gray-900">Crafting Digital Stories</h2>
-                <p className="text-lg text-gray-600 mb-8">
-                  We transform ordinary products into extraordinary narratives. Through the lens of creativity, 
-                  we capture moments that resonate with your audience, turning viewers into customers and 
-                  customers into advocates.
-                </p>
-                <div className="grid grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary mb-2">20+</div>
-                    <div className="text-sm text-gray-600">Videos Created</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary mb-2">98%</div>
-                    <div className="text-sm text-gray-600">Client Satisfaction</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary mb-2">1M+</div>
-                    <div className="text-sm text-gray-600">Views Generated</div>
-                  </div>
-                </div>
-              </div>
+            {/* Plus Symbol */}
+            <div className="flex items-center justify-center">
+              <span className="text-4xl font-bold text-primary">+</span>
             </div>
+
+            {/* Relatable Content Card */}
+            <div className="bg-white p-8 rounded-2xl shadow-lg w-[400px] text-center">
+              <div className="w-16 h-16 bg-secondary-orange/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <svg className="w-8 h-8 text-secondary-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Authentic User Experience</h3>
+              <p className="text-gray-600">Content that resonates with real customers, featuring genuine people who reflect your target audience's diversity.</p>
+            </div>
+
+            {/* Equals Symbol */}
+            <div className="flex items-center justify-center">
+              <span className="text-4xl font-bold text-primary">=</span>
+            </div>
+
+            {/* Trust Building Card */}
+            <div className="bg-white p-8 rounded-2xl shadow-lg w-[400px] text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Standing Out</h3>
+              <p className="text-gray-600">In a sea of generic content, real people give your brand a distinct, memorable voice that cuts through the noise</p>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="mt-16 text-center">
+            <button 
+              onClick={() => window.location.href = 'mailto:info@creativesocially.com?subject=Inclusive%20Content%20Creation'}
+              className="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-300"
+            >
+              Create Authentic Content
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Featured Collection */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 lg:px-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Collection</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover our range of professional content creation services
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                id: 1,
-                title: "Social Media Management",
-                description: "Complete social media management including content creation, scheduling, and engagement.",
-                image: "/images/social-media.jpg"
-              },
-              {
-                id: 2,
-                title: "Content Creation",
-                description: "Professional content creation for all your social media platforms and marketing needs.",
-                image: "/images/content-creation.jpg"
-              },
-              {
-                id: 3,
-                title: "Brand Strategy",
-                description: "Comprehensive brand strategy development to help your business grow and succeed.",
-                image: "/images/brand-strategy.jpg"
-              }
-            ].map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all cursor-pointer group"
-                onClick={() => window.location.href = '/products'}
+      {/* Social Media Management Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div 
+                className="aspect-[4/3] relative"
+                style={{ filter: 'drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1))' }}
               >
-                {/* Product Image */}
-                <div className="aspect-[4/3] relative bg-gray-100 overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
+                <div 
+                  className="w-full h-full"
+                  style={{ clipPath: 'polygon(25% 0%, 100% 0, 75% 100%, 0% 100%)' }}
+                >
+                  <img 
+                    src="/assets/images/services/social-media.png"
+                    alt="Social Media Management"
+                    className="w-full h-full object-cover rounded-[48px]"
                   />
+                  <div className="absolute inset-0 bg-black/10 rounded-[48px]"></div>
                 </div>
+              </div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+            </motion.div>
 
-                {/* Product Info */}
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2 relative inline-block group-hover:after:content-[''] group-hover:after:absolute group-hover:after:left-0 group-hover:after:bottom-0 group-hover:after:w-full group-hover:after:h-0.5 group-hover:after:bg-primary group-hover:after:transition-all group-hover:after:duration-300">
-                    {product.title}
-                  </h3>
-                  <p className="text-gray-600 line-clamp-2">
-                    {product.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <div className="relative inline-block">
+                <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-secondary-orange/10 to-primary/10 rounded-full blur-2xl"></div>
+                <h2 className="relative text-5xl font-bold text-gray-900">Social Media Management</h2>
+              </div>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                We handle your social media presence with expertise and creativity. From content planning to community management, we ensure your brand stays engaging and relevant across all platforms.
+              </p>
+              <button 
+                onClick={() => window.location.href = 'mailto:info@creativesocially.com?subject=Book%20a%20Meeting%20-%20Social%20Media%20Management'}
+                className="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Book a meeting
+              </button>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Content Creation Section */}
+      <section className="py-24 bg-white-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6 order-2 lg:order-1"
+            >
+              <div className="relative inline-block">
+                <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-secondary-orange/10 to-primary/10 rounded-full blur-2xl"></div>
+                <h2 className="relative text-5xl font-bold text-gray-900">Content Creation</h2>
+              </div>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Our creative team produces high-quality content that resonates with your audience. From stunning visuals to compelling copy, we bring your brand story to life.
+              </p>
+              <button 
+                onClick={() => window.location.href = 'mailto:info@creativesocially.com?subject=Book%20a%20Meeting%20-%20Content%20Creation'}
+                className="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Book a meeting
+              </button>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative order-1 lg:order-2"
+            >
+              <div 
+                className="aspect-[4/3] relative"
+                style={{ filter: 'drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1))' }}
+              >
+                <div 
+                  className="w-full h-full"
+                  style={{ clipPath: 'polygon(0 0, 75% 0, 100% 100%, 25% 100%)' }}
+                >
+                  <img 
+                    src="/assets/images/services/content-creation.jpg"
+                    alt="Content Creation"
+                    className="w-full h-full object-cover rounded-[48px]"
+                  />
+                  <div className="absolute inset-0 bg-black/10 rounded-[48px]"></div>
+                </div>
+              </div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Brand Strategy Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div 
+                className="aspect-[4/3] relative"
+                style={{ filter: 'drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1))' }}
+              >
+                <div 
+                  className="w-full h-full"
+                  style={{ clipPath: 'polygon(25% 0%, 100% 0, 75% 100%, 0% 100%)' }}
+                >
+                  <img 
+                    src="/assets/images/services/brand-strategy.jpg"
+                    alt="Brand Strategy"
+                    className="w-full h-full object-cover rounded-[48px]"
+                  />
+                  <div className="absolute inset-0 bg-black/10 rounded-[48px]"></div>
+                </div>
+              </div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <div className="relative inline-block">
+                <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-secondary-orange/10 to-primary/10 rounded-full blur-2xl"></div>
+                <h2 className="relative text-5xl font-bold text-gray-900">Brand Strategy</h2>
+              </div>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                We develop comprehensive brand strategies that set you apart. From market analysis to positioning, we help you build a strong and memorable brand identity.
+              </p>
+              <button 
+                onClick={() => window.location.href = 'mailto:info@creativesocially.com?subject=Book%20a%20Meeting%20-%20Brand%20Strategy'}
+                className="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Book a meeting
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* Progress Bar Section */}
       <section id="progress-section" className="py-24 bg-white">
@@ -695,8 +869,8 @@ const Home = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              We are always 100% on budget, <span className="text-secondary-orange">don't worry</span>
-            </h2>
+  100% on <span className="text-secondary-orange">time</span>, <span className="text-secondary-orange">budget</span> and <span className="text-secondary-orange">brand</span>
+</h2> 
           </motion.div>
 
           <div className="max-w-3xl mx-auto">
@@ -720,12 +894,15 @@ const Home = () => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-white-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Smart brands dont overpay <br />– neither should you
-            </h2>
+            <div className="relative inline-block">
+              <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-secondary-orange/10 to-primary/10 rounded-full blur-2xl"></div>
+              <h2 className="relative text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Smart brands dont overpay <br />– neither should you
+              </h2>
+            </div>
             <p className="text-lg text-gray-600">
               Unluck new customers and receive your benefits from day 1 <br />with Creative Socially
             </p>
@@ -733,7 +910,7 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Essential Plan */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
+            <div className="bg-white rounded-2xl p-8" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)' }}>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-3 h-3 bg-gray-900 rounded-full"></div>
                 <h3 className="text-xl font-semibold text-gray-900">Creative Socially On-Demand</h3>
@@ -897,7 +1074,10 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Who We Are</h2>
+            <div className="relative inline-block">
+              <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-secondary-orange/10 to-primary/10 rounded-full blur-2xl"></div>
+              <h2 className="relative text-4xl font-bold text-gray-900 mb-4">Who We Are</h2>
+            </div>
             <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
           </motion.div>
 
@@ -988,7 +1168,10 @@ const Home = () => {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+              <div className="relative inline-block">
+                <div className="absolute -inset-8 bg-gradient-to-r from-primary/10 via-secondary-orange/10 to-primary/10 rounded-full blur-2xl"></div>
+                <h2 className="relative text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+              </div>
               <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
               <p className="text-lg text-gray-600">
                 Find answers to common questions about our services and process.
@@ -1110,14 +1293,14 @@ const Home = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input 
-                  type="email" 
-                  name="email"
+                  <input 
+                    type="email" 
+                    name="email" 
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary text-black"
-                  required
-                />
+                    required
+                  />
               </div>
 
               <div>
@@ -1144,18 +1327,18 @@ const Home = () => {
                 />
               </div>
 
-              <button 
-                type="submit"
+                <button 
+                  type="submit"
                 disabled={isSubmitting}
                 className="w-full py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
+                >
                 {isSubmitting ? 'Sending...' : 'Submit'}
-              </button>
+                </button>
             </form>
-          </div>
-        </div>
+              </div>
+              </div>
       )}
-    </div>
+              </div>
   </>
   );
 };
