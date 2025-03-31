@@ -96,38 +96,28 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Banner Section */}
-      <section className="py-32 bg-secondary-peach/20 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-secondary-peach/30 to-secondary-orange/5 relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-secondary-orange/5"></div>
+          <div className="absolute inset-0 bg-white/40 backdrop-blur-sm"></div> 
         </div>
         <div className="container mx-auto px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
+            className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-5xl font-bold mb-6 text-gray-800">{product.title}</h1>
-            <p className="text-3xl font-bold text-primary">
-              {new Intl.NumberFormat('da-DK', {
-                style: 'currency',
-                currency: 'DKK'
-              }).format(parseFloat(variant?.price?.amount || 0))}
-            </p>
-            {!variant?.availableForSale && (
-              <span className="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-medium mt-4">Sold Out</span>
-            )}
+            <h1 className="text-5xl font-bold mb-6 text-gray-900">{product.title}</h1>
           </motion.div>
         </div>
       </section>
 
       {/* Product Details Section */}
-      <section className="py-12">
+      <section className="py-4 mb-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left Column: Image, Features, Delivery, Cart */}
+            {/* Left Column: Image */}
             <div className="space-y-6">
-              {/* Product Image */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -232,13 +222,28 @@ const ProductDetail = () => {
               </motion.div>
             </div>
 
-            {/* Right Column: Description */}
+            {/* Right Column: Description and Price */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               className="bg-gray-50 p-6 rounded-xl h-fit"
             >
+              <div className="mb-6">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-primary">
+                    {new Intl.NumberFormat('da-DK', {
+                      style: 'currency',
+                      currency: 'DKK'
+                    }).format(parseFloat(variant?.price?.amount || 0))}
+                  </span>
+                  <span className="text-xl font-semibold text-gray-900">DKK</span>
+                  <span className="text-gray-500">/ item</span>
+                </div>
+                {!variant?.availableForSale && (
+                  <span className="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-medium mt-4">Sold Out</span>
+                )}
+              </div>
               <div 
                 className="[&>h1]:text-3xl [&>h2]:text-2xl [&>h3]:text-xl [&>h4]:text-lg [&>h1]:font-bold [&>h2]:font-bold [&>h3]:font-semibold [&>h4]:font-semibold [&>h1]:mb-4 [&>h2]:mb-3 [&>h3]:mb-2 [&>h4]:mb-2 [&>p]:mb-4 [&>ul]:mb-4 [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:mb-4 [&>ol]:list-decimal [&>ol]:pl-5 [&>li]:mb-2 [&>strong]:font-bold [&>em]:italic [&>a]:text-primary [&>a]:underline hover:[&>a]:text-secondary-orange [&>img]:rounded-lg [&>img]:my-4 text-gray-700" 
                 dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} 
